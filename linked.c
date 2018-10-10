@@ -5,6 +5,13 @@
 
 void print_list( struct node * li )
 {
+  //if the list is empty prints just null and stops rest from running
+  if (!li)
+  {
+      printf("null\n"); //print null to signal end
+      return;
+  }
+
   //while it isnt the last node
   while( li->next )
   {
@@ -31,20 +38,29 @@ struct node * insert_front( struct node * li, int x )
 
 struct node * free_list( struct node * li )
 {
-  struct node * temp = li;
-  struct node * curr = li;
-
-  while (curr->next)
+  //catch just in case argument is a NULL pointer
+  if (!li)
   {
-    curr = curr->next;
-    printf("FREEING %d\n", temp->i);
-    free(temp);
-    temp = curr;
+      return NULL;
   }
 
-  curr = curr->next;
+  struct node * temp = li; //reference to the node to be removed
+  struct node * curr = li->next; //reference to the node thats next
+
+  //while u haven't hit a null pointer
+  while (curr)
+  {
+    printf("FREEING %d\n", temp->i); //announces what you're freeing
+    free(temp); //releases the node
+
+    //moves the temp and curr to the next
+    temp = curr;
+    curr = curr->next;
+  }
+
+  //last node
   printf("FREEING %d\n", temp->i);
   free(temp);
 
-  return curr;
+  return curr; //returns NULL pointer
 }
